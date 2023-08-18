@@ -1,6 +1,7 @@
 var bcrypt = require("bcrypt");
 var User = require("../Model/userModel");
 const SignUp = require("../Model/authModel");
+const Login = require("../Model/authModel");
 // login 
 // const login = async (req, res) => {
 //     const user = User.findOne({
@@ -53,7 +54,7 @@ const SignUp = require("../Model/authModel");
 //         });
 // }
 const login = async (req, res) =>{
-    const newSignUp = new SignUp(req.body);
+    const newSignUp = new Login(req.body);
     await newSignUp.save();
     res.json(newSignUp);
 }
@@ -89,6 +90,19 @@ const signup = async (req, res) =>{
     await newSignUp.save();
     res.json(newSignUp);
 }
+const getSignup = async (req, res) =>{
+    try{
+        const query = {};
+        const cursor = await SignUp.find(query);
+        res.send(cursor);
+    }catch(error){
+        throw error
+    }
+  }
+const getSingleSignup = async (req, res) =>{
+    const user = await SignUp.findById(req.params.id);
+    res.json(user);
+  }
 // forget
 
 const forget = async (req, res) => {
@@ -97,4 +111,4 @@ const forget = async (req, res) => {
 }
 
 
-module.exports = { login, signup, forget }
+module.exports = { login, signup, forget, getSignup,getSingleSignup }
