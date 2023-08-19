@@ -7,13 +7,16 @@ const mongoose = require("mongoose");
 const UserRoute = require("./Routes/UserRoute");
 const AuthRoute = require('./Routes/AuthRoute');
 const subscribeRoute = require('./Routes/subscribeRoute');
+const BlogRoute = require('./Routes/blogRoute');
 const postRoute = require('./Routes/PostRoute')
 const menuRouter = require('./Routes/MenuRouter')
 const orderRoute = require('./Routes/orderRoute')
 const bodyParser = require("body-parser");
 
 // middleware
-app.use(cors());
+app.use(cors(
+  
+));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const connectDB = async () => {
@@ -44,6 +47,7 @@ main();
 app.use('/user', UserRoute)
 app.use('/auth', AuthRoute)
 app.use('/subscribe', subscribeRoute);
+app.use('/blog', BlogRoute);
 app.use('/post', postRoute);
 app.use('/menu', menuRouter);
 app.use('/order', orderRoute);
@@ -52,7 +56,38 @@ app.get('/', (req, res) => {
   res.send('Hello Fitness Dine!')
 })
 
+// Stripe
 
+const stripe = require("stripe")(process.env.PAYMENT_SECRET_KEY)
+
+app.post("/create-checkout-session", async (req, res)=>{
+    try{
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types:["card"],
+            mode:"payment",
+            line_items: req.body.items.map(item => {
+                return{
+                    price_data:{
+                        currency:"usd",
+                        product_data:{
+                            name: item.name
+                        },
+                        unit_amount: (item.price)*100,
+
+                    },
+                    quantity: item.quantity
+                }
+            }),
+            success_url: 'http://127.0.0.1:5173/success',
+            cancel_url: 'http://127.0.0.1:5173/cancel'
+        })
+
+        res.json({url: session.url})
+
+    }catch(e){
+     res.status(500).json({error:e.message})
+    }
+})
 
 const server = app.listen(port, () => {
   console.log(`Server is running: ${port}`);

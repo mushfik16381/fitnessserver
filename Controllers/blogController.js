@@ -1,8 +1,8 @@
-const Subscriber = require("../Model/subscriberModel");
+const Blog = require("../Model/blogModel");
 const store = async (req, res) =>{
-    const newSubscriber = new Subscriber(req.body);
-    await newSubscriber.save();
-    res.json(newSubscriber);
+    const newBlog = new Blog(req.body);
+    await newBlog.save();
+    res.json(newBlog);
 }
 // const store = async (req, res) => {
 //     const email = req.body.email;
@@ -10,10 +10,10 @@ const store = async (req, res) =>{
 //     Subscriber.save().then(() => console.log(user))
 //     return res.json(user)
 // }
-const getSubscribe = async (req, res) => {
+const getBlog = async (req, res) => {
     try {
         const query = {};
-        const cursor = await Subscriber.find(query);
+        const cursor = await Blog.find(query);
         res.send(cursor);
     } catch (error) {
         throw error
@@ -21,4 +21,4 @@ const getSubscribe = async (req, res) => {
 }
 
 
-module.exports = { store, getSubscribe };
+module.exports = { store, getBlog };

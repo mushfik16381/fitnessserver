@@ -1,5 +1,5 @@
 const express = require('express');
-const { store, getSubscribe } = require('../Controllers/SubscriberController');
+const { store, getBlog } = require('../Controllers/blogController');
 // const { createUser, getUser, singleUser} = require('../Controllers/useController')
 const router = express.Router()
 
@@ -7,7 +7,7 @@ const router = express.Router()
 // Subscriber
 
 
-router.post('/', store);
-router.get('/', getSubscribe);
+// router.post('/', store);
+// router.get('/', getBlog);
 
 module.exports = router
