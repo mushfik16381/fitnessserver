@@ -2,11 +2,12 @@ const mongoose =require ('mongoose')
 
 const menuSchema = mongoose.Schema({
   name: String,
-  thumbnail: String,
-  calories: String,
-  protein: String,
-  carb: String,
-  fat: String,
+  title: String,
+  price: Number,
+  calories: Number,
+  protein: Number,
+  carb: Number,
+  fat: Number,
 }, { timestamps: true });
 
 const Menu = mongoose.model("Menu", menuSchema);

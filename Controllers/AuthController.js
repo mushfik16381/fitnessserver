@@ -47,7 +47,7 @@ const login = async (req, res) => {
                 email: user.email,
                 role: user.role,
             },
-            message: "Login successfull",
+            message: "Login successful",
             accessToken: token,
         });
 
@@ -85,14 +85,14 @@ const signup = async (req, res) => {
 const getSignup = async (req, res) => {
     try {
         const query = {};
-        const cursor = await SignUp.find(query);
+        const cursor = await User.find(query);
         res.send(cursor);
     } catch (error) {
         throw error
     }
 }
 const getSingleSignup = async (req, res) => {
-    const user = await SignUp.findById(req.params.id);
+    const user = await User.findById(req.params.id);
     res.json(user);
 }
 // forget

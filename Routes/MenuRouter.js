@@ -1,14 +1,13 @@
 const express = require('express');
-const { index, create, update, deleteMenu } = require('../Controllers/MenuController');
-
+const { store, getMenu } = require('../Controllers/MenuController');
+// const { createUser, getUser, singleUser} = require('../Controllers/useController')
 const router = express.Router()
 
 
-// Login , Register , forget 
+// Subscriber
 
-router.get('/', index);
-router.post('/', create);
-router.patch('/', update);
-router.delete('/', deleteMenu);
+
+router.post('/', store);
+router.get('/', getMenu);
 
 module.exports = router

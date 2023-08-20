@@ -7,7 +7,7 @@ const router = express.Router()
 // Subscriber
 
 
-// router.post('/', store);
-// router.get('/', getBlog);
+router.post('/', store);
+router.get('/', getBlog);
 
 module.exports = router

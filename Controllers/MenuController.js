@@ -1,32 +1,24 @@
-
-// show all data
-const index = async (req, res) => {
-    console.log(req.body);
-    return res.json(req.body)
+const Menu = require("../Model/menuModel");
+const store = async (req, res) =>{
+    const newMenu = new Menu(req.body);
+    await newMenu.save();
+    res.json(newMenu);
 }
-
-// Create Post
-
-const create = async(req, res)=> {
-    console.log(req.body);
-    return res.json(req.body);
-}
-
-// update 
-
-const update = async (req, res) => {
-    console.log(req.body);
-    return res.json(req.body)
-}
-
-// delete 
-
-
-const deleteMenu = async(req, res)=> {
-    console.log(req.body)
-    return res.json(req.body);
+// const store = async (req, res) => {
+//     const email = req.body.email;
+//     const user = new Subscriber(email);
+//     Subscriber.save().then(() => console.log(user))
+//     return res.json(user)
+// }
+const getMenu = async (req, res) => {
+    try {
+        const query = {};
+        const cursor = await Menu.find(query);
+        res.send(cursor);
+    } catch (error) {
+        throw error
+    }
 }
 
 
-
-module.exports = { index, create, update, deleteMenu };
+module.exports = { store, getMenu };
