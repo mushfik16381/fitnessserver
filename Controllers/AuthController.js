@@ -7,14 +7,14 @@ const login = async (req, res) => {
     const user = await User.findOne({
         email: req.body.email
     });
-    if (!user.role) {
+    if (!user?.role) {
         return res.status(404)
             .send({
                 success: false,
                 message: "User Not found."
             });
     }
-    
+
     //comparing passwords
     const passwordIsValid = bcrypt.compareSync(
         req.body.password,
@@ -51,11 +51,7 @@ const login = async (req, res) => {
             accessToken: token,
         });
 
-
-
-    
-
-} 
+}
 const signup = async (req, res) => {
     const { email, name, password } = req.body;
     const checkEmail = await User.find({ email }).exec();
@@ -66,7 +62,7 @@ const signup = async (req, res) => {
         return res.json({ success: false, message: 'User Already Exists' });
     }
     else {
-        const loggedin =  await User.create({
+        const loggedin = await User.create({
             name,
             email,
             role: 'user',
@@ -74,7 +70,7 @@ const signup = async (req, res) => {
         });
 
         return res.json({ success: true, message: 'Registration Successfull' });
-         
+
     }
 
 

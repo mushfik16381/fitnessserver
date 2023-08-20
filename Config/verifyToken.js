@@ -6,8 +6,8 @@ const verifyToken = (req, res, next) => {
     jwt.verify(req.headers.authorization.split(' ')[1], process.env.API_SECRET, function (err, decode) {
       if (err) req.user = undefined;
       User.findOne({
-          _id: decode.id
-        })
+        _id: decode.id
+      })
         .exec((err, user) => {
           if (err) {
             res.status(500)
