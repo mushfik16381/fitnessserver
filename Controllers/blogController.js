@@ -4,12 +4,12 @@ const store = async (req, res) =>{
     await newBlog.save();
     res.json(newBlog);
 }
-// const store = async (req, res) => {
-//     const email = req.body.email;
-//     const user = new Subscriber(email);
-//     Subscriber.save().then(() => console.log(user))
-//     return res.json(user)
-// }
+// delete
+const deleteblog = async (req, res) => {
+    const id = req.params.id;
+    const dltblog = await Blog.deleteOne({ _id: id });
+    res.send(dltblog);
+  };
 const getBlog = async (req, res) => {
     try {
         const query = {};
@@ -19,6 +19,10 @@ const getBlog = async (req, res) => {
         throw error
     }
 }
+// find single service
+const getSingleBlog = async (req, res) => {
+    const singleBlog = await Blog.findById(req.params.id);
+    res.json(singleBlog);
+  };
 
-
-module.exports = { store, getBlog };
+module.exports = { store, getBlog, deleteblog, getSingleBlog };
