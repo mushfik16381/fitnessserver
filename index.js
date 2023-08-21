@@ -78,8 +78,8 @@ app.post("/create-checkout-session", async (req, res)=>{
                     quantity: item.quantity
                 }
             }),
-            success_url: 'http://127.0.0.1:5173/success',
-            cancel_url: 'http://127.0.0.1:5173/cancel'
+            success_url: 'https://fitnessdine.com/success',
+            cancel_url: 'https://fitnessdine.com/cancel'
         })
 
         res.json({url: session.url})
