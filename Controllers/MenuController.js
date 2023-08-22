@@ -10,6 +10,12 @@ const store = async (req, res) =>{
 //     Subscriber.save().then(() => console.log(user))
 //     return res.json(user)
 // }
+// delete
+const deleteMenu = async (req, res) => {
+    const id = req.params.id;
+    const dltMenu = await Menu.deleteOne({ _id: id });
+    res.send(dltMenu);
+};
 const getMenu = async (req, res) => {
     try {
         const query = {};
@@ -21,4 +27,4 @@ const getMenu = async (req, res) => {
 }
 
 
-module.exports = { store, getMenu };
+module.exports = { store, getMenu, deleteMenu };

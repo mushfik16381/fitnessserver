@@ -11,6 +11,7 @@ const BlogRoute = require('./Routes/blogRoute');
 const postRoute = require('./Routes/PostRoute')
 const menuRouter = require('./Routes/MenuRouter')
 const orderRoute = require('./Routes/orderRoute')
+const PlanRouter = require('./Routes/PlanRouter')
 const bodyParser = require("body-parser");
 
 // middleware
@@ -51,6 +52,7 @@ app.use('/blog', BlogRoute);
 app.use('/post', postRoute);
 app.use('/menu', menuRouter);
 app.use('/order', orderRoute);
+app.use('/plan', PlanRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello Fitness Dine!')
@@ -81,7 +83,7 @@ app.post("/create-checkout-session", async (req, res)=>{
             success_url: 'https://fitnessdine.com/success',
             cancel_url: 'https://fitnessdine.com/cancel'
         })
-
+        console.log(session.payment_status)
         res.json({url: session.url})
 
     }catch(e){

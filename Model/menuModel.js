@@ -3,6 +3,7 @@ const mongoose =require ('mongoose')
 const menuSchema = mongoose.Schema({
   name: String,
   title: String,
+  img: String,
   price: Number,
   calories: Number,
   protein: Number,

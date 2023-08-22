@@ -1,5 +1,5 @@
 const express = require('express');
-const { store, getMenu, deleteMenu } = require('../Controllers/MenuController');
+const { store, getPlan } = require('../Controllers/PlanController');
 // const { createUser, getUser, singleUser} = require('../Controllers/useController')
 const router = express.Router()
 
@@ -8,7 +8,7 @@ const router = express.Router()
 
 
 router.post('/', store);
-router.get('/', getMenu);
-router.delete('/:id', deleteMenu);
+router.get('/', getPlan);
+// router.delete('/:id', deleteMenu);
 
 module.exports = router
