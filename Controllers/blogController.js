@@ -1,6 +1,28 @@
 const Blog = require("../Model/blogModel");
+const cloudinary = require('../utlies/cloudinary');
 const store = async (req, res) =>{
     const newBlog = new Blog(req.body);
+    try {
+      const result = await cloudinary.uploader.upload(image, {
+          folder: "blogs",
+          // width: 300,
+          // crop: "scale"
+      })
+      const product = await Blog.create({
+          image: {
+              public_id: result.public_id,
+              url: result.secure_url
+          },
+      });
+      res.status(201).json({
+          success: true,
+          product
+      })
+
+  } catch (error) {
+      console.log(error);
+
+  }
     await newBlog.save();
     res.json(newBlog);
     
@@ -26,7 +48,7 @@ const getSingleBlog = async (req, res) => {
     res.json(singleBlog);
   };
 
-//single food edit
+//single blog edit
 const updateBlog = async (req, res) => {
     const id = req.params.id;
     const updatevalue = req.body;

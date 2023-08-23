@@ -2,7 +2,7 @@ const mongoose =require ('mongoose')
 
 const blogSchema = new mongoose.Schema({
   title: String,
-  img: String,
+  image: String,
   description: String,
 });
 

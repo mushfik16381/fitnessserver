@@ -16,6 +16,11 @@ const deleteMenu = async (req, res) => {
     const dltMenu = await Menu.deleteOne({ _id: id });
     res.send(dltMenu);
 };
+// find single service
+const getSingleMenu = async (req, res) => {
+    const singleBlog = await Menu.findById(req.params.id);
+    res.json(singleBlog);
+  };
 const getMenu = async (req, res) => {
     try {
         const query = {};
@@ -27,4 +32,4 @@ const getMenu = async (req, res) => {
 }
 
 
-module.exports = { store, getMenu, deleteMenu };
+module.exports = { store, getMenu, deleteMenu, getSingleMenu };
