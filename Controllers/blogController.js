@@ -1,31 +1,8 @@
 const Blog = require("../Model/blogModel");
-const cloudinary = require('../utlies/cloudinary');
 const store = async (req, res) =>{
     const newBlog = new Blog(req.body);
-    try {
-      const result = await cloudinary.uploader.upload(image, {
-          folder: "blogs",
-          // width: 300,
-          // crop: "scale"
-      })
-      const product = await Blog.create({
-          image: {
-              public_id: result.public_id,
-              url: result.secure_url
-          },
-      });
-      res.status(201).json({
-          success: true,
-          product
-      })
-
-  } catch (error) {
-      console.log(error);
-
-  }
     await newBlog.save();
     res.json(newBlog);
-    
 }
 // delete
 const deleteblog = async (req, res) => {
@@ -47,6 +24,12 @@ const getSingleBlog = async (req, res) => {
     const singleBlog = await Blog.findById(req.params.id);
     res.json(singleBlog);
   };
+// find single service
+const getSlugBlog = async (req, res) => {
+  const slug = req.params.slug;
+  const getSlug = await Blog.findOne({  slug: slug }).exec();
+    res.json(getSlug);
+  };
 
 //single blog edit
 const updateBlog = async (req, res) => {
@@ -59,4 +42,10 @@ const updateBlog = async (req, res) => {
     res.send(upblog);
   };
 
-module.exports = { store, getBlog, deleteblog, getSingleBlog, updateBlog };
+module.exports = { store, getBlog, deleteblog,  updateBlog, getSlugBlog, getSingleBlog };
+
+
+// const slug = req.params.slug;
+// const query = { slug: slug};
+// const cursor = Blog.find(query);
+// console.log(cursor)
