@@ -8,8 +8,7 @@ const login = async (req, res) => {
         email: req.body.email
     });
     if (!user?.role) {
-        return res.status(404)
-            .send({
+        return res.json({
                 success: false,
                 message: "User Not found."
             });
@@ -22,11 +21,10 @@ const login = async (req, res) => {
     );
     // checking if password was valid and send response accordingly
     if (!passwordIsValid) {
-        return res.status(401)
-            .send({
+        return res.json({
                 success: false,
                 accessToken: null,
-                message: "Invalid Password!"
+                message: "Invalid Email Or Password!"
             });
     }
     //signing token with user id
@@ -69,7 +67,7 @@ const signup = async (req, res) => {
             password: bcrypt.hashSync(password, 8)
         });
 
-        return res.json({ success: true, message: 'Registration Successfull' });
+        return res.json({ success: true, message: 'Registration Successful' });
 
     }
 
@@ -92,11 +90,17 @@ const getSingleSignup = async (req, res) => {
     res.json(user);
 }
 // forget
-
 const forget = async (req, res) => {
-    console.log(req.body);
-    return res.json(req.body)
-}
+    const { email } = req.body;
+    console.log(email)
+    try {
+      const oldUser = await User.findOne({ email });
+      if (!oldUser) {
+        return res.json({ status: "User Not Exists!!" });
+      }
+    } catch (error) { }
+  };
+
 
 
 module.exports = { login, signup, forget, getSignup, getSingleSignup }

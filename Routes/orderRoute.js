@@ -1,5 +1,5 @@
 const express = require('express');
-const { index, show, create, update } = require('../Controllers/OrderController');
+const { index, update, createOrder, getSingleOrder } = require('../Controllers/OrderController');
 
 
 const router = express.Router()
@@ -11,8 +11,8 @@ const router = express.Router()
 // Update Order
 
 router.get('/', index);
-router.get('/:id', show);
-router.post('/', create);
+router.get('/:id', getSingleOrder);
+router.post('/', createOrder);
 router.patch('/', update);
 
 module.exports = router
