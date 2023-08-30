@@ -24,35 +24,61 @@ const createOrder = async (req, res) => {
     }
 }
 // find single service
-const getSingleOrder =  (req, res) => {
+const getSingleOrder = async (req, res) => {
+    const singleOrder = await Order.findById(req.params.id);
+    res.json(singleOrder);
+  };
+// find single service
+// const getSingleOrder =  (req, res) => {
     
-    try{
+//     try{
         
-        const singleOrder =  Order.findById(req.params.id);
-        console.log(singleOrder)
-        if (singleOrder) {
-           return res.json({
-                success: true,
-                data: singleOrder,
-            })
-        }
-    }
-    catch (error) {
-        return res.json({
-            success: false,
-            message: error
-        });
-    }
+//         const singleOrder =  Order.findById(req.params.id);
+//         console.log(singleOrder)
+//         if (singleOrder) {
+//            return res.json({
+//                 success: true,
+//                 data: singleOrder,
+//             })
+//         }
+//     }
+//     catch (error) {
+//         return res.json({
+//             success: false,
+//             message: error
+//         });
+//     }
 
-};
+// };
+
 // show all data
 const index = async (req, res) => {
-    console.log(req.body);
-    return res.json(req.body)
+    try {
+        const query = {};
+        const getOrder = await Order.find(query);
+        res.send(getOrder);
+    } catch (error) {
+        throw error
+    }
 }
 
-// update 
+// find single email service
+const getEmailOrder = async (req, res) => {
+    const email = req.params.email;
+    const getEmail = await Order.find({  email: email }).exec();
+      res.json(getEmail);
+};
 
+// filter by date / query
+const dateQuery = async (req, res) => {
+    const date = req.params.createdAt;
+    const getDate = await Order.find({  date: date }).exec();
+      res.json(getDate);
+    // const date = await Order.find({ createdAt: { $lt: req.params.createdAt } });
+    // res.send(date);
+};
+
+// update 
 const update = async (req, res) => {
     console.log(req.body);
     return res.json(req.body)
@@ -61,4 +87,4 @@ const update = async (req, res) => {
 
 
 
-module.exports = { index, createOrder,  update, getSingleOrder };
+module.exports = { index, createOrder,  update, getSingleOrder, getEmailOrder, dateQuery };
