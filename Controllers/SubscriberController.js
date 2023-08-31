@@ -1,51 +1,24 @@
 const Subscriber = require("../Model/subscriberModel");
-var nodemailer = require("nodemailer");
 
-
-
-const store = async (req, res) =>{
-    const newSubscriber = new Subscriber(req.body);
-    console.log(newSubscriber);
-    try {
-
-        const transporter = nodemailer.createTestAccount ({
-            service: "gmail",
-            auth: {
-                user: "ahmedmushfik7@gmail.com",
-              pass: "ftaxcthzcufgztos",
-            }
-        });
-
-        const mailOptions = {
-            from: "ahmedmushfik7@gmail.com",
-            to: "ahmed.mushfik16381@gmail.com",
-            subject: "Sending Email With React And Nodejs",
-            html: '<h1>Congratulation</h1> <h1> You successfully sent Email </h2>'
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.log("Error" + error)
-            } else {
-                console.log("Email sent:" + info.response);
-                res.status(201).json({status:201,info})
-            }
-        })
-
-    } catch (error) {
-        console.log("Error" + error);
-        res.status(401).json({status:401,error})
+// post subscribe
+const store = async (req, res) => {
+    const { email } = req.body;
+    const checkEmail = await Subscriber.find({ email }).exec();
+    if (checkEmail.length > 0) {
+        return res.json({ success: false, message: 'Subscriber already in the list' });
     }
-    await newSubscriber.save();
-    res.json(newSubscriber);
+    else {
+        const newSubscriber = new Subscriber(req.body);
+        await newSubscriber.save();
+        return res.json({ success: true, message: 'Subscribed Successfully' });
+
+    }
 }
-
-
-
+// get subscribe
 const getSubscribe = async (req, res) => {
     try {
         const query = {};
-        const cursor = await Subscriber.find(query);
+        const cursor = await Subscriber.find(query).sort({createdAt: -1}).exec();
         res.send(cursor);
     } catch (error) {
         throw error

@@ -1,17 +1,17 @@
 const express = require('express');
-const { store, getBlog, deleteblog,  updateBlog, getSlugBlog, getSingleBlog  } = require('../Controllers/blogController');
-// const { createUser, getUser, singleUser} = require('../Controllers/useController')
+const { store, getBlog, deleteBlog,  updateBlog, getSlugBlog, getSingleBlog  } = require('../Controllers/blogController');
+const { isAuthenticated } = require('../Config/verifyToken');
 const router = express.Router()
 
 
 // Subscriber
 
 
-router.post('/', store);
+router.post('/', isAuthenticated ,store);
 router.get('/', getBlog);
-router.delete('/:id', deleteblog);
+router.delete('/:id', isAuthenticated, deleteBlog);
 router.get('/:id', getSingleBlog);
 router.get('/blog/:slug', getSlugBlog);
-router.patch('/:id', updateBlog);
+router.patch('/:id', isAuthenticated, updateBlog);
 
 module.exports = router

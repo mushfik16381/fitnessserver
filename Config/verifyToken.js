@@ -1,28 +1,21 @@
 const jwt = require("jsonwebtoken");
-User = require("../Model/userModel");
-
-const verifyToken = (req, res, next) => {
-  if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT') {
-    jwt.verify(req.headers.authorization.split(' ')[1], process.env.API_SECRET, function (err, decode) {
-      if (err) req.user = undefined;
-      User.findOne({
-        _id: decode.id
-      })
-        .exec((err, user) => {
-          if (err) {
-            res.status(500)
-              .send({
-                message: err
-              });
-          } else {
-            req.user = user;
-            next();
-          }
-        })
-    });
-  } else {
-    req.user = undefined;
-    next();
-  }
+const isAuthenticated = (req, res, next) => {
+    try {
+        
+        let token = req.get("authorization");
+        if (!token) {
+            return res.status(404).json({ success: false, msg: "Token not found" });
+        }
+        token = token.split(" ")[1];
+        
+        const decoded = jwt.verify(token, process.env.API_SECRET);
+        req.email = decoded.email;
+        next();
+    } catch (error) {
+        return res.status(401).json({ success: false, msg: error.message });
+        // console.error(error);
+    }
+}
+module.exports = {
+    isAuthenticated,
 };
-module.exports = verifyToken;

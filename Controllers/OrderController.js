@@ -55,7 +55,7 @@ const getSingleOrder = async (req, res) => {
 const index = async (req, res) => {
     try {
         const query = {};
-        const getOrder = await Order.find(query);
+        const getOrder = await Order.find(query).sort({createdAt: -1}).exec();
         res.send(getOrder);
     } catch (error) {
         throw error

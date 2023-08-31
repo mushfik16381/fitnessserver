@@ -75,20 +75,6 @@ const signup = async (req, res) => {
 }
 
 
-
-const getSignup = async (req, res) => {
-    try {
-        const query = {};
-        const cursor = await User.find(query);
-        res.send(cursor);
-    } catch (error) {
-        throw error
-    }
-}
-const getSingleSignup = async (req, res) => {
-    const user = await User.findById(req.params.id);
-    res.json(user);
-}
 // forget
 const forget = async (req, res) => {
     const { email } = req.body;
@@ -103,4 +89,4 @@ const forget = async (req, res) => {
 
 
 
-module.exports = { login, signup, forget, getSignup, getSingleSignup }
+module.exports = { login, signup, forget }

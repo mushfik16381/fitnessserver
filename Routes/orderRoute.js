@@ -1,5 +1,6 @@
 const express = require('express');
 const { index, update, createOrder, getSingleOrder, getEmailOrder, dateQuery } = require('../Controllers/OrderController');
+const { isAuthenticated } = require('../Config/verifyToken');
 
 
 const router = express.Router()
@@ -10,11 +11,11 @@ const router = express.Router()
 // Create Order
 // Update Order
 
-router.get('/', index);
-router.get('/order/:email', getEmailOrder);
-router.get("/datequery/:date", dateQuery);
-router.get('/:id', getSingleOrder);
-router.post('/', createOrder);
-router.patch('/', update);
+router.get('/', isAuthenticated, index);
+router.get('/order/:email', isAuthenticated, getEmailOrder);
+router.get("/datequery/:date", isAuthenticated, dateQuery);
+router.get('/:id', isAuthenticated, getSingleOrder);
+router.post('/', isAuthenticated, createOrder);
+router.patch('/', isAuthenticated, update);
 
 module.exports = router

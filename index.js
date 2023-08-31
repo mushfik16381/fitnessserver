@@ -8,7 +8,6 @@ const UserRoute = require("./Routes/UserRoute");
 const AuthRoute = require('./Routes/AuthRoute');
 const subscribeRoute = require('./Routes/subscribeRoute');
 const BlogRoute = require('./Routes/blogRoute');
-const postRoute = require('./Routes/PostRoute')
 const menuRouter = require('./Routes/MenuRouter')
 const orderRoute = require('./Routes/orderRoute')
 const PlanRouter = require('./Routes/PlanRouter')
@@ -50,7 +49,6 @@ app.use('/user', UserRoute)
 app.use('/auth', AuthRoute)
 app.use('/subscribe', subscribeRoute);
 app.use('/blog', BlogRoute);
-app.use('/post', postRoute);
 app.use('/menu', menuRouter);
 app.use('/order', orderRoute);
 app.use('/plan', PlanRouter);
@@ -63,34 +61,6 @@ app.get('/', (req, res) => {
 
 const stripe = require("stripe")(process.env.PAYMENT_SECRET_KEY)
 
-// app.post("/create-checkout-session", async (req, res)=>{
-//     try{
-//         const session = await stripe.checkout.sessions.create({
-//             payment_method_types:["card"],
-//             mode:"payment",
-//             line_items: req.body.items.map(item => {
-//                 return{
-//                     price_data:{
-//                         currency:"AED",
-//                         product_data:{
-//                             name: item.name
-//                         },
-//                         unit_amount: (item.price)*100,
-
-//                     },
-//                     quantity: item.quantity
-//                 }
-//             }),
-//             success_url: 'https://fitnessdine.com/success',
-//             cancel_url: 'https://fitnessdine.com/cancel'
-//         })
-//         console.log(session.payment_status)
-//         res.json({url: session.url})
-
-//     }catch(e){
-//      res.status(500).json({error:e.message})
-//     }
-// })
 
 app.post("/create-checkout-session", async (req, res) => {
   const { plan, price } = req.body;

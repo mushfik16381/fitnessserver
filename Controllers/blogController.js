@@ -5,15 +5,15 @@ const store = async (req, res) =>{
     res.json(newBlog);
 }
 // delete
-const deleteblog = async (req, res) => {
+const deleteBlog = async (req, res) => {
     const id = req.params.id;
-    const dltblog = await Blog.deleteOne({ _id: id });
-    res.send(dltblog);
+    const dltBlog = await Blog.deleteOne({ _id: id });
+    res.send(dltBlog);
 };
 const getBlog = async (req, res) => {
     try {
         const query = {};
-        const cursor = await Blog.find(query);
+        const cursor = await Blog.find(query).sort({createdAt: -1}).exec();
         res.send(cursor);
     } catch (error) {
         throw error
@@ -42,10 +42,5 @@ const updateBlog = async (req, res) => {
     res.send(upblog);
   };
 
-module.exports = { store, getBlog, deleteblog,  updateBlog, getSlugBlog, getSingleBlog };
+module.exports = { store, getBlog, deleteBlog,  updateBlog, getSlugBlog, getSingleBlog };
 
-
-// const slug = req.params.slug;
-// const query = { slug: slug};
-// const cursor = Blog.find(query);
-// console.log(cursor)
