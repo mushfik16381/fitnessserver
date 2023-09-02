@@ -9,7 +9,7 @@ const isAuthenticated = (req, res, next) => {
         token = token.split(" ")[1];
         
         const decoded = jwt.verify(token, process.env.API_SECRET);
-        req.email = decoded.email;
+        req.role = decoded.role;
         next();
     } catch (error) {
         return res.status(401).json({ success: false, msg: error.message });

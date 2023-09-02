@@ -17,6 +17,7 @@ const store = async (req, res) => {
 // get subscribe
 const getSubscribe = async (req, res) => {
     try {
+        console.log(req.role)
         const query = {};
         const cursor = await Subscriber.find(query).sort({createdAt: -1}).exec();
         res.send(cursor);

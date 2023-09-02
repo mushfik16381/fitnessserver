@@ -68,6 +68,7 @@ const orderSchema = mongoose.Schema({
         required: true
     },
     paymentType: String,
+    userEmail: String,
     orderStatus: { type: String, default: 'pending' }
 }, { timestamps: true });
 

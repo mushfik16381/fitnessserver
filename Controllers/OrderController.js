@@ -65,7 +65,7 @@ const index = async (req, res) => {
 // find single email service
 const getEmailOrder = async (req, res) => {
     const email = req.params.email;
-    const getEmail = await Order.find({  email: email }).exec();
+    const getEmail = await Order.find({  userEmail: email }).exec();
       res.json(getEmail);
 };
 
