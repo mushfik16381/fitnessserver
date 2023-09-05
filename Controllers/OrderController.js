@@ -1,3 +1,4 @@
+const moment = require("moment/moment");
 const Order = require("../Model/OrderModel");
 var nodemailer = require("nodemailer");
 
@@ -54,9 +55,27 @@ const getSingleOrder = async (req, res) => {
 // show all data
 const index = async (req, res) => {
     try {
-        const query = {};
-        const getOrder = await Order.find(query).sort({createdAt: -1}).exec();
-        res.send(getOrder);
+        let queryOrder = JSON.stringify(req.query);
+        queryOrder = queryOrder.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+        const queryObj = JSON.parse(queryOrder)
+        // console.log(queryObj)
+        // let date =  moment().format().slice(0, 10)
+        // const newDate = new Date(date)
+        let query =  Order.find(queryObj).sort({createdAt: -1});
+        // if(req.query.sort){
+        //      query = query.sort(req.query.sort);
+        // }
+                        // .where('duration')
+                        // .gte(req.query.duration)
+                        // .where('country')
+                        // .gte(req.query.country)
+
+        // const query = {};
+        
+        // const getOrder = await Order.find(query).sort({createdAt: moment().format().slice(0, 10)}).exec()
+        // const getOrder = await Order.find(query).sort({createdAt: -1}).exec();
+        const order = await query;
+        res.json(order);
     } catch (error) {
         throw error
     }

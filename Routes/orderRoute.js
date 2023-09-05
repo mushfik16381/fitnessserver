@@ -12,7 +12,7 @@ const router = express.Router()
 // Create Order
 // Update Order
 
-router.get('/', isAuthenticated, index);
+router.get('/',  index);
 router.get('/order/:email', isAuthenticated, getEmailOrder);
 router.get("/datequery/:date", isAuthenticated, dateQuery);
 router.get('/:id', isAuthenticated, getSingleOrder);
