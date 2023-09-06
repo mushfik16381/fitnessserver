@@ -29,6 +29,19 @@ const getSingleOrder = async (req, res) => {
     const singleOrder = await Order.findById(req.params.id);
     res.json(singleOrder);
   };
+
+//get pending orders
+const getPendingOrder = async (req, res) => {
+    try{
+       const singleOrder = await Order.find({  orderStatus: 'pending' }).exec();
+        // const singleOrder = Order.where({ 'orderStatus': 'pending' }).exec();
+        // const singleOrder = await Order.find({orderStatus: 'pending'}).exec();
+    res.json(singleOrder);
+    }
+    catch{
+        res.json('error')
+    }
+};
 // find single service
 // const getSingleOrder =  (req, res) => {
     
@@ -54,6 +67,7 @@ const getSingleOrder = async (req, res) => {
 
 // show all data
 const index = async (req, res) => {
+    // const { page = 1, limit = 10 } = req.query;
     try {
         let queryOrder = JSON.stringify(req.query);
         queryOrder = queryOrder.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
@@ -61,7 +75,12 @@ const index = async (req, res) => {
         // console.log(queryObj)
         // let date =  moment().format().slice(0, 10)
         // const newDate = new Date(date)
-        let query =  Order.find(queryObj).sort({createdAt: -1});
+        let query =  Order.find(queryObj).sort({createdAt: -1})
+        // .limit(limit * 1).skip((page - 1) * limit).exec();
+        // get total documents in the Posts collection
+        
+
+    // return response with posts, total pages, and current page
         // if(req.query.sort){
         //      query = query.sort(req.query.sort);
         // }
@@ -74,8 +93,26 @@ const index = async (req, res) => {
         
         // const getOrder = await Order.find(query).sort({createdAt: moment().format().slice(0, 10)}).exec()
         // const getOrder = await Order.find(query).sort({createdAt: -1}).exec();
+
+        // pagination
+        const page = req.query.page*1 || 1;
+        const limit = req.query.limit*1 || 10;
+        const skip = (page -1) * limit;
+        query = query.skip(skip).limit(limit);
+        if(req.query.page){
+            const orderCount = Order.countDocuments();
+            if(skip >= orderCount){
+                throw new Error("This page is not found!")
+            }
+        }
+
         const order = await query;
-        res.json(order);
+        
+    // const count = await Order.countDocuments();
+        console.log(query)
+        res.json(order)
+        // res.json({order, totalPages: Math.ceil(count / limit),
+        // currentPage: page,});
     } catch (error) {
         throw error
     }
@@ -106,4 +143,4 @@ const update = async (req, res) => {
 
 
 
-module.exports = { index, createOrder,  update, getSingleOrder, getEmailOrder, dateQuery };
+module.exports = { index, createOrder,  update, getSingleOrder, getEmailOrder, getPendingOrder , dateQuery };
