@@ -67,17 +67,11 @@ const getPendingOrder = async (req, res) => {
 
 // show all data
 const index = async (req, res) => {
-    // const { page = 1, limit = 10 } = req.query;
     try {
         let queryOrder = JSON.stringify(req.query);
         queryOrder = queryOrder.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
         const queryObj = JSON.parse(queryOrder)
-        // console.log(queryObj)
-        // let date =  moment().format().slice(0, 10)
-        // const newDate = new Date(date)
         let query =  Order.find(queryObj).sort({createdAt: -1})
-        // .limit(limit * 1).skip((page - 1) * limit).exec();
-        // get total documents in the Posts collection
         
 
     // return response with posts, total pages, and current page
@@ -95,21 +89,20 @@ const index = async (req, res) => {
         // const getOrder = await Order.find(query).sort({createdAt: -1}).exec();
 
         // pagination
-        const page = req.query.page*1 || 1;
-        const limit = req.query.limit*1 || 10;
-        const skip = (page -1) * limit;
-        query = query.skip(skip).limit(limit);
-        if(req.query.page){
-            const orderCount = Order.countDocuments();
-            if(skip >= orderCount){
-                throw new Error("This page is not found!")
-            }
-        }
+        // const page = req.query.page*1 || 1;
+        // const limit = req.query.limit*1 || 10;
+        // const skip = (page -1) * limit;
+        // query = query.skip(skip).limit(limit);
+        // if(req.query.page){
+        //     const orderCount = Order.countDocuments();
+        //     if(skip >= orderCount){
+        //         throw new Error("This page is not found!")
+        //     }
+        // }
 
         const order = await query;
         
     // const count = await Order.countDocuments();
-        console.log(query)
         res.json(order)
         // res.json({order, totalPages: Math.ceil(count / limit),
         // currentPage: page,});
